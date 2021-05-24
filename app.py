@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 
@@ -37,6 +37,8 @@ class ProductSchema(ma.Schema):
 product_schema = ProductSchema()
 products_schema = ProductSchema(many=True)
 
+##################################
+# With API
 # Create a Product
 @app.route('/product', methods=['POST'])
 def add_product():
@@ -94,6 +96,50 @@ def delete_product(id):
     db.session.commit()
 
     return product_schema.jsonify(product)
+
+#######################################
+# With User Interface
+#######################################
+
+@app.route('/')
+def home():
+    all_products = Product.query.all()
+    result = products_schema.dump(all_products)
+
+    return render_template('home.html', results=result)
+
+
+@app.route('/delete/<int:id>')
+def _delete(id):
+    product = Product.query.get(id)
+    try:
+        db.session.delete(product)
+        db.session.commit()
+        return redirect(url_for('home'))
+    except:
+        return 'Error while deleting'
+
+
+@app.route('/update/<int:id>', methods=['GET', 'POST'])
+def _update(id):
+    product = Product.query.get(id)
+   
+    if request.method == 'POST':
+        product.name = request.form['name']
+        product.description = request.form['description']
+        product.price = request.form['price']
+        product.qty = request.form['qty']
+
+        try:
+            db.session.commit()
+            return redirect(url_for('home'))
+        except:
+            return 'Error while updating'
+
+    else:
+        return render_template('update.html', product=product)
+   
+
 
 # Run Server
 if __name__ == '__main__':

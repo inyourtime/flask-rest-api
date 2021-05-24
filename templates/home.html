@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+<title>Home</title>
+
+{% endblock head %}
+
+{% block content %}
+
+<h1>Products Lust</h1>
+<table class="table table-striped table-primary">
+    <thead>
+        <tr class="table-active">
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Price</th>
+            <th scope="col">Qty</th>
+            <th scope="col">Manage</th>
+        </tr>
+        {% for result in results %}
+        <tr>
+            <td></td>
+            <td>{{ result.name }}</td>
+            <td>{{ result.description }}</td>
+            <td>{{ result.price }}</td>
+            <td>{{ result.qty }}</td>
+            <td>
+                <a type="button" class="btn btn-primary btn-sm" href="{{ url_for('_update', id=result.id) }}">Update</a>
+                <a type="button" class="btn btn-danger btn-sm btn-primary-spacing"
+                    href="{{ url_for('_delete', id=result.id) }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </thead>
+
+</table>
+
+
+
+{% endblock content %}

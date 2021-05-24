@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+<title>Update</title>
+
+{% endblock head %}
+
+{% block content %}
+
+<h1>Update Product</h1>
+
+<form align="center" action="{{ url_for('_update', id=product.id) }}" method="POST">
+    <input style="margin-bottom: 10px" type="text" name="name" id="name" placeholder="edit name"
+        value="{{ product.name }}">
+    <br>
+    <input style="margin-bottom: 10px" type="text" name="description" id="description" placeholder="edit name"
+        value="{{ product.description }}">
+    <br>
+    <input style="margin-bottom: 10px" type="text" name="price" id="price" placeholder="edit name"
+        value="{{ product.price }}">
+    <br>
+    <input style="margin-bottom: 10px" type="text" name="qty" id="qty" placeholder="edit name"
+        value="{{ product.qty }}">
+    <br>
+    <input style="margin-bottom: 10px" type="submit" value="Edit Product" placeholder="edit name">
+</form>
+
+{% endblock content %}
